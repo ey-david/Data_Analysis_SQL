@@ -1,0 +1,20 @@
+# The following common table expression (CTE) was used to generate a list of film IDs, ratings, and category names
+
+WITH cte (country, all_customer_count, top_customer_count) AS (SELECT d.country,
+count(a.customer_id) AS all_customer_count,
+count (top_5_customers) AS top_customer_count
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID LEFT JOIN (SELECT A.customer_id, A.first_name, A.last_name,
+sum(E.amount)AS total_amount_paid, A.email, B.phone,
+B.address, B.address2, B.district, C.city, D.country FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID INNER JOIN payment E ON E.customer_id = A.customer_id WHERE city IN ('Aurora',
+'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei', 'So Leopoldo', 'Teboksary', 'Tianjin', 'Cianjur')
+GROUP BY a.customer_id, b.phone, b.address, b.address2, b. district, c.city, d.country
+ORDER BY total_amount_paid DESC
+LIMIT 5) AS top_5_customers ON A.customer_id=top_5_customers.customer_id
+GROUP BY d.country
+ORDER BY top_customer_count DESC)
+SELECT country, all_customer_count, top_customer_count FROM cte
+GROUP BY country, all_customer_count, top_customer_count ORDER BY top_customer_count DESC;
