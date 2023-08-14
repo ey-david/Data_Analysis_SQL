@@ -1,0 +1,16 @@
+# This subquery was used to generate a list of Rockbuster's movies in terms of revenue, including how many copies of the movie Rockbuster held
+
+SELECT DENSE_RANK() OVER(ORDER BY revenue desc, title desc) AS ranking, title, release_year, rating, name AS genre, copies, revenue
+from
+(
+SELECT 
+a.title, a.release_year, a. rating, f.name, count(distinct c.inventory_id) AS copies, sum(b.amount) AS revenue
+FROM film a
+INNER JOIN inventory c on a.film_id = c.film_id
+INNER JOIN rental d on c.inventory_id = d.inventory_id
+INNER JOIN payment b on b.rental_id = d.rental_id
+INNER JOIN film_category e on a.film_id = e.film_id
+INNER JOIN category f on e.category_id = f.category_id
+GROUP BY a.title, a.release_year, a.rating, f.name
+ORDER BY revenue desc
+) as revenue_calc;
