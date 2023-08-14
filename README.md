@@ -1,7 +1,7 @@
 # Data_Analysis_SQL
 This is a presentation of a project from the CareerFoundry data analysis training demonstrating postGreSQL to extract insights.
 
-The objective of this project was to load all of a fictional video rental company's data into a relational database management system and then use SQL to analyze the data and answer various business questions. The key questions were:
+The objective of this project was to load all of the data of a fictional video rental company (Rockbuster) into a relational database management system and then use SQL to analyze the data and answer various business questions. The key questions were:
 
 -Which movies contributed the most/least to revenue gain?
 
