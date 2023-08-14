@@ -1,0 +1,27 @@
+##The following two queries were used to determine Rockbuster's top 10 customers in terms of revenue.
+
+select D.country, c.city_id,
+c.city, sum(e.amount) AS revenue
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id 
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID 
+INNER JOIN payment E ON e.customer_id = a.customer_id
+WHERE country in ('India','China','United States','Japan','Mexico','Brazil', 'Russian Federation','Philippines','Turkey','Indonesia') 
+GROUP BY country, city, c.city_id
+ORDER BY revenue DESC
+LIMIT 11;
+
+# Note: LIMIT 11 was used as there are two US cities named Aurora, both with the same city_id. As their individual revenue is less than the other cities given, the following query was then run.
+
+select D.country,
+c.city, sum(e.amount) AS revenue
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id 
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID 
+INNER JOIN payment E ON e.customer_id = a.customer_id
+WHERE country in ('India','China','United States','Japan','Mexico','Brazil', 'Russian Federation','Philippines','Turkey','Indonesia') 
+AND city IN ('Cape Coral','Santa Brbara dOeste','Memphis','Tanza', 'Valparai','Santa Rosa','Tanauan','Halisahar','Bijapur','Usolje-Sibirskoje') 
+GROUP BY country, city
+ORDER BY revenue DESC;
